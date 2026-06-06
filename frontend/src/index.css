@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-family: 'Inter', sans-serif;
+}
+
+@theme {
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-950: #022c22;
+}
+
+@utility glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@utility glass-dark {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Custom scrollbars for slick modern look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 1);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 1);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 1);
+}
+
+/* Printing styles for beautiful clinical receipts */
+@media print {
+  @page {
+    size: A5;
+    margin: 0;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt;
+  }
+
+  /* Hide screen elements explicitly to prevent blank space / multi-page layout issues */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Hide all elements on the screen for standard Ctrl+P */
+  body:not(.iframe-print-body) * {
+    visibility: hidden;
+  }
+
+  /* Show only the printable invoice and its contents for standard Ctrl+P */
+  body:not(.iframe-print-body) .printable-invoice, 
+  body:not(.iframe-print-body) .printable-invoice * {
+    visibility: visible !important;
+  }
+
+  body:not(.iframe-print-body) .printable-invoice {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 148mm !important;
+    height: 210mm !important;
+    margin: 0 !important;
+    padding: 10mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    z-index: 99999 !important;
+  }
+
+  /* Print specific style for hidden iframe container */
+  .iframe-print-body {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .iframe-print-body .printable-invoice {
+    position: relative !important;
+    width: 148mm !important;
+    height: 210mm !important;
+    margin: 0 !important;
+    padding: 10mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important; /* Sharp corners on paper */
+    background: white !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+  }
+}
