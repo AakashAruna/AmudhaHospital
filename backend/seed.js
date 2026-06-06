@@ -21,7 +21,7 @@ const seedData = async () => {
     
     // 1. Users
     await User.bulkCreate([
-      { username: 'admin', hashed_password: hashedPassword, role: 'Admin', full_name: 'Dr. Anthony Admin' },
+      { username: 'suriya', hashed_password: hashedPassword, role: 'Admin', full_name: 'Dr. Suriya M.B.B.S.' },
       { username: 'pharmacist', hashed_password: hashedPassword, role: 'Pharmacist', full_name: 'Patricia Pharmacist' },
       { username: 'clerk', hashed_password: hashedPassword, role: 'Billing Clerk', full_name: 'Christopher Clerk' }
     ]);
