@@ -38,7 +38,7 @@ export const Patients = () => {
   const fetchPatientsList = async () => {
     setLoadingList(true);
     try {
-      const data = await apiFetch('http://localhost:8000/api/billing/patients');
+      const data = await apiFetch('/api/billing/patients');
       setPatients(data);
     } catch (err) {
       console.error('Failed to fetch patient list:', err);
@@ -49,7 +49,7 @@ export const Patients = () => {
 
   const fetchInventoryList = async () => {
     try {
-      const data = await apiFetch('http://localhost:8000/api/inventory');
+      const data = await apiFetch('/api/inventory');
       setInventory(data);
     } catch (err) {
       console.error('Failed to fetch inventory:', err);
@@ -68,7 +68,7 @@ export const Patients = () => {
     setHistoryError(null);
     setExpandedInvoices({});
     try {
-      const data = await apiFetch(`http://localhost:8000/api/billing/patients/${patientId}/history`);
+      const data = await apiFetch(`/api/billing/patients/${patientId}/history`);
       setHistoryData(data);
     } catch (err) {
       console.error('Failed to load patient history:', err);

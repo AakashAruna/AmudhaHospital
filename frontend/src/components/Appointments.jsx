@@ -70,7 +70,7 @@ export const Appointments = () => {
         return;
       }
       try {
-        const url = `http://localhost:8000/api/appointments/next-queue?doctor_name=${encodeURIComponent(doctorName)}&appointment_date=${encodeURIComponent(appointmentDate)}`;
+        const url = `/api/appointments/next-queue?doctor_name=${encodeURIComponent(doctorName)}&appointment_date=${encodeURIComponent(appointmentDate)}`;
         const data = await apiFetch(url);
         setNextQueuePreview(data.next_queue);
       } catch (err) {
@@ -93,12 +93,12 @@ export const Appointments = () => {
     setLoading(true);
     setError(null);
     try {
-      const url = `http://localhost:8000/api/appointments?date_filter=${dateFilter}&q=${encodeURIComponent(search)}${doctorFilter ? `&doctor=${encodeURIComponent(doctorFilter)}` : ''}`;
+      const url = `/api/appointments?date_filter=${dateFilter}&q=${encodeURIComponent(search)}${doctorFilter ? `&doctor=${encodeURIComponent(doctorFilter)}` : ''}`;
       const data = await apiFetch(url);
       setAppointments(data);
       
       // Calculate simple client-side metrics from all appointments
-      const allAppts = await apiFetch(`http://localhost:8000/api/appointments?date_filter=all`);
+      const allAppts = await apiFetch(`/api/appointments?date_filter=all`);
       const todayStr = new Date().toISOString().split('T')[0];
       
       const todayCount = allAppts.filter(a => a.appointment_date === todayStr && a.status === 'Completed').length;
@@ -116,7 +116,7 @@ export const Appointments = () => {
   // Fetch existing patient profiles for autocompletion
   const fetchPatients = async () => {
     try {
-      const data = await apiFetch(`http://localhost:8000/api/billing/patients`);
+      const data = await apiFetch(`/api/billing/patients`);
       setPatients(data);
     } catch (err) {
       console.error('Failed to load patient records', err);
@@ -175,7 +175,7 @@ export const Appointments = () => {
     if (!newPatientName || !newPatientContact) return;
 
     try {
-      const data = await apiFetch('http://localhost:8000/api/billing/patients', {
+      const data = await apiFetch('/api/billing/patients', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -232,7 +232,7 @@ export const Appointments = () => {
     };
 
     try {
-      await apiFetch('http://localhost:8000/api/appointments', {
+      await apiFetch('/api/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -247,7 +247,7 @@ export const Appointments = () => {
   // Update status (Mark Completed / Cancel)
   const handleUpdateStatus = async (id, nextStatus) => {
     try {
-      await apiFetch(`http://localhost:8000/api/appointments/${id}`, {
+      await apiFetch(`/api/appointments/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: nextStatus })
@@ -262,7 +262,7 @@ export const Appointments = () => {
   const handleDeleteAppointment = async (id) => {
     if (!window.confirm('Are you sure you want to delete this appointment record?')) return;
     try {
-      await apiFetch(`http://localhost:8000/api/appointments/${id}`, {
+      await apiFetch(`/api/appointments/${id}`, {
         method: 'DELETE'
       });
       fetchAppointments();

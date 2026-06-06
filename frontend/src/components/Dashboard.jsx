@@ -33,8 +33,8 @@ export const Dashboard = () => {
     setError(null);
     try {
       const [mRes, cRes] = await Promise.all([
-        apiFetch('http://localhost:8000/api/payments/dashboard-metrics'),
-        apiFetch('http://localhost:8000/api/payments/charts/daily-collections')
+        apiFetch('/api/payments/dashboard-metrics'),
+        apiFetch('/api/payments/charts/daily-collections')
       ]);
       setMetrics(mRes);
       setChartData(cRes);

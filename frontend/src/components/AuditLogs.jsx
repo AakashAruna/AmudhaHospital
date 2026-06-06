@@ -23,7 +23,7 @@ export const AuditLogs = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await apiFetch('http://localhost:8000/api/audit');
+      const data = await apiFetch('/api/audit');
       setLogs(data);
     } catch (err) {
       setError(err.message || 'Failed to load audit trail logs');

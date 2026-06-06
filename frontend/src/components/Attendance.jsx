@@ -70,9 +70,9 @@ export const Attendance = () => {
   const fetchDirectoryAndLogs = async () => {
     try {
       const [users, logs, holidays] = await Promise.all([
-        apiFetch('http://localhost:8000/api/auth/users'),
-        apiFetch(`http://localhost:8000/api/attendance?date=${adminDate}`),
-        apiFetch('http://localhost:8000/api/attendance/holidays')
+        apiFetch('/api/auth/users'),
+        apiFetch(`/api/attendance?date=${adminDate}`),
+        apiFetch('/api/attendance/holidays')
       ]);
       setStaffList(users);
       setAdminLogs(logs);
@@ -86,9 +86,9 @@ export const Attendance = () => {
     try {
       setLoading(true);
       const [users, logs, holidays] = await Promise.all([
-        apiFetch('http://localhost:8000/api/auth/users'),
-        apiFetch(`http://localhost:8000/api/attendance?start_date=${startDate}&end_date=${endDate}`),
-        apiFetch('http://localhost:8000/api/attendance/holidays')
+        apiFetch('/api/auth/users'),
+        apiFetch(`/api/attendance?start_date=${startDate}&end_date=${endDate}`),
+        apiFetch('/api/attendance/holidays')
       ]);
       setStaffList(users);
       setPayrollLogs(logs);
@@ -147,7 +147,7 @@ export const Attendance = () => {
 
     try {
       setError(null);
-      const res = await apiFetch('http://localhost:8000/api/attendance/log', {
+      const res = await apiFetch('/api/attendance/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -190,7 +190,7 @@ export const Attendance = () => {
     try {
       setTogglingUserId(userId);
       setError(null);
-      const res = await apiFetch('http://localhost:8000/api/attendance/log', {
+      const res = await apiFetch('/api/attendance/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -223,7 +223,7 @@ export const Attendance = () => {
 
     try {
       setError(null);
-      const res = await apiFetch('http://localhost:8000/api/auth/register', {
+      const res = await apiFetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -252,7 +252,7 @@ export const Attendance = () => {
   const handleSaveSalary = async (userId) => {
     try {
       setError(null);
-      const res = await apiFetch(`http://localhost:8000/api/auth/users/${userId}/salary`, {
+      const res = await apiFetch(`/api/auth/users/${userId}/salary`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ base_salary: Number(tempSalaryVal) || 0.00 })
@@ -276,7 +276,7 @@ export const Attendance = () => {
 
     try {
       setError(null);
-      await apiFetch(`http://localhost:8000/api/auth/users/${staffId}`, {
+      await apiFetch(`/api/auth/users/${staffId}`, {
         method: 'DELETE'
       });
 
@@ -293,7 +293,7 @@ export const Attendance = () => {
 
     try {
       setError(null);
-      const res = await apiFetch('http://localhost:8000/api/attendance/holidays', {
+      const res = await apiFetch('/api/attendance/holidays', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date: holidayDate, description: holidayDesc })
@@ -318,7 +318,7 @@ export const Attendance = () => {
 
     try {
       setError(null);
-      await apiFetch(`http://localhost:8000/api/attendance/holidays/${holidayId}`, {
+      await apiFetch(`/api/attendance/holidays/${holidayId}`, {
         method: 'DELETE'
       });
       setHolidaysList(prev => prev.filter(h => h.id !== holidayId));

@@ -116,7 +116,10 @@ export const AuthProvider = ({ children }) => {
       headers,
     };
 
-    const response = await fetch(url, requestOptions);
+    // Auto-prepend API_URL for relative paths starting with /
+    const targetUrl = url.startsWith('/') ? `${API_URL}${url}` : url;
+
+    const response = await fetch(targetUrl, requestOptions);
     
     if (response.status === 401) {
       // Session expired

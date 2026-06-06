@@ -23,7 +23,7 @@ export const Payments = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await apiFetch('http://localhost:8000/api/payments/transactions');
+      const data = await apiFetch('/api/payments/transactions');
       setTransactions(data);
     } catch (err) {
       setError(err.message || 'Failed to load payments ledger');

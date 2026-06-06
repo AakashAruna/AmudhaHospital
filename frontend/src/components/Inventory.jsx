@@ -46,7 +46,7 @@ export const Inventory = () => {
     setLoading(true);
     setError(null);
     try {
-      const url = `http://localhost:8000/api/inventory?q=${encodeURIComponent(search)}${categoryFilter ? `&category=${categoryFilter}` : ''}`;
+      const url = `/api/inventory?q=${encodeURIComponent(search)}${categoryFilter ? `&category=${categoryFilter}` : ''}`;
       const data = await apiFetch(url);
       setItems(data);
     } catch (err) {
@@ -109,13 +109,13 @@ export const Inventory = () => {
 
     try {
       if (editingItem) {
-        await apiFetch(`http://localhost:8000/api/inventory/${editingItem.id}`, {
+        await apiFetch(`/api/inventory/${editingItem.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
       } else {
-        await apiFetch('http://localhost:8000/api/inventory', {
+        await apiFetch('/api/inventory', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -133,7 +133,7 @@ export const Inventory = () => {
     if (!dispenseItem) return;
 
     try {
-      await apiFetch(`http://localhost:8000/api/inventory/${dispenseItem.id}/dispense`, {
+      await apiFetch(`/api/inventory/${dispenseItem.id}/dispense`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quantity: Number(dispenseQty) })

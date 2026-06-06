@@ -68,9 +68,9 @@ export const Billing = () => {
     setError(null);
     try {
       const [invRes, patRes, inventoryRes] = await Promise.all([
-        apiFetch('http://localhost:8000/api/billing/invoices'),
-        apiFetch('http://localhost:8000/api/billing/patients'),
-        apiFetch('http://localhost:8000/api/inventory') // Fetch to allow item drop-down matching!
+        apiFetch('/api/billing/invoices'),
+        apiFetch('/api/billing/patients'),
+        apiFetch('/api/inventory') // Fetch to allow item drop-down matching!
       ]);
       setInvoices(invRes);
       setPatients(patRes);
@@ -98,7 +98,7 @@ export const Billing = () => {
     if (!newPatientName || !newPatientContact) return;
 
     try {
-      const data = await apiFetch('http://localhost:8000/api/billing/patients', {
+      const data = await apiFetch('/api/billing/patients', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -194,7 +194,7 @@ export const Billing = () => {
     };
 
     try {
-      await apiFetch('http://localhost:8000/api/billing/invoices', {
+      await apiFetch('/api/billing/invoices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -227,7 +227,7 @@ export const Billing = () => {
     setCheckoutError(null);
 
     try {
-      await apiFetch(`http://localhost:8000/api/payments/checkout/${checkoutInvoice.id}`, {
+      await apiFetch(`/api/payments/checkout/${checkoutInvoice.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
