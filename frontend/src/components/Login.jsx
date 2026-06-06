@@ -199,7 +199,7 @@ export const Login = () => {
 
               <div className="mt-4 grid grid-cols-3 gap-3">
                 <button
-                  onClick={() => selectDemoProfile('admin')}
+                  onClick={() => selectDemoProfile('suriya')}
                   className="flex flex-col items-center justify-center py-2 px-2 border border-slate-700/60 rounded-xl bg-slate-800/40 hover:bg-emerald-950/20 hover:border-emerald-500/50 transition text-slate-300 hover:text-white"
                 >
                   <span className="text-xs font-bold">Admin</span>
