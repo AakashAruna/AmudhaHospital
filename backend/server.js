@@ -19,10 +19,16 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 // Enable CORS — allow configured frontend domain + localhost for local dev
+let frontendUrl = process.env.FRONTEND_URL;
+if (frontendUrl) {
+  // Strip trailing slash if present
+  frontendUrl = frontendUrl.trim().replace(/\/$/, '');
+}
+
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  process.env.FRONTEND_URL  // e.g. https://amudha-hospital.netlify.app
+  frontendUrl
 ].filter(Boolean);
 
 app.use(cors({
