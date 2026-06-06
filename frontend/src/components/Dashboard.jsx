@@ -80,13 +80,6 @@ export const Dashboard = () => {
       description: 'Immediate action needed'
     },
     {
-      label: 'Outstanding Receivables',
-      value: `₹${(metrics?.total_receivables ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      icon: Wallet,
-      color: 'text-purple-500 bg-purple-50 border-purple-100',
-      description: 'Patient/Insurance balance due'
-    },
-    {
       label: 'Total Collections',
       value: `₹${(metrics?.total_collections ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       icon: PiggyBank,
@@ -120,7 +113,7 @@ export const Dashboard = () => {
       )}
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((card, idx) => {
           const Icon = card.icon;
           return (

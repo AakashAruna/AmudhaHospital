@@ -31,7 +31,7 @@ exports.processPayment = async (req, res) => {
     if (amountPaidNum > outOfPocketNum) {
       await transaction.rollback();
       return res.status(400).json({
-        detail: `Payment amount (₹${amountPaidNum.toFixed(2)}) exceeds outstanding amount (₹${outOfPocketNum.toFixed(2)})`
+        detail: `Payment amount (₹${amountPaidNum.toFixed(2)}) exceeds due amount (₹${outOfPocketNum.toFixed(2)})`
       });
     }
 
@@ -46,7 +46,7 @@ exports.processPayment = async (req, res) => {
       timestamp: new Date()
     }, { transaction });
 
-    // Update Invoice outstanding
+    // Update Invoice out of pocket due
     invoice.out_of_pocket_due = outOfPocketNum - amountPaidNum;
     if (Number(invoice.out_of_pocket_due) <= 0) {
       invoice.status = 'Paid';

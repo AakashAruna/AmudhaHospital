@@ -958,7 +958,7 @@ export const Billing = () => {
               {/* Net totals output */}
               <div className="bg-emerald-50/50 border border-emerald-100 p-4 rounded-2xl flex justify-between items-center">
                 <div>
-                  <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Patient Balance Due</span>
+                  <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Net Payable</span>
                   <p className="text-2xl font-bold text-emerald-700 mt-0.5">₹{getPatientDue().toFixed(2)}</p>
                 </div>
               </div>
@@ -1024,7 +1024,7 @@ export const Billing = () => {
                   <span className="font-semibold text-slate-800">₹{Number(checkoutInvoice.total_amount).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-slate-500 border-t border-slate-200/50 pt-2 font-bold text-slate-900">
-                  <span>Total outstanding due:</span>
+                  <span>Total Due:</span>
                   <span>₹{Number(checkoutInvoice.out_of_pocket_due).toFixed(2)}</span>
                 </div>
               </div>
@@ -1334,18 +1334,10 @@ export const Billing = () => {
                         </div>
                       )}
 
-                      {/* TOTAL Bar matching template */}
+                      {/* TOTAL Bar representing final net payable amount */}
                       <div className="bg-[#00b887] text-white font-bold p-2 rounded-lg flex justify-between items-center text-xs shadow-sm">
-                        <span>TOTAL:</span>
-                        <span>₹{Number(printTargetInvoice.total_amount).toFixed(2)}</span>
-                      </div>
-
-                      {/* Balance Due */}
-                      <div className="flex justify-between font-bold text-slate-900 border-t border-slate-100 pt-2 px-1">
-                        <span>Balance Due:</span>
-                        <span className={Number(printTargetInvoice.out_of_pocket_due) > 0 ? 'text-rose-600' : 'text-slate-550'}>
-                          ₹{Number(printTargetInvoice.out_of_pocket_due).toFixed(2)}
-                        </span>
+                        <span>TOTAL PAYABLE:</span>
+                        <span>₹{Number(printTargetInvoice.out_of_pocket_due).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
