@@ -19,6 +19,7 @@ export const Inventory = () => {
   // Search/Filter states
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -159,6 +160,16 @@ export const Inventory = () => {
     return diffDays >= 0 && diffDays <= 30;
   };
 
+  const filteredItems = items.filter(item => {
+    if (statusFilter === 'lowstock') {
+      return isLowStock(item);
+    }
+    if (statusFilter === 'expiring') {
+      return isExpiringSoon(item.expiry_date);
+    }
+    return true;
+  });
+
   const handleExportCSV = () => {
     const headers = [
       { key: 'item_name', label: 'Item Name' },
@@ -170,7 +181,7 @@ export const Inventory = () => {
       { key: 'unit_price', label: 'Unit Price' },
       { key: 'supplier_info', label: 'Supplier Info' }
     ];
-    exportToCSV(items, headers, 'hms_inventory');
+    exportToCSV(filteredItems, headers, 'hms_inventory');
   };
 
   return (
@@ -240,6 +251,22 @@ export const Inventory = () => {
             <option value="Consumable">Consumable</option>
           </select>
         </div>
+        
+        {/* Status select (Low Stock / Expiring) */}
+        <div className="relative w-full sm:w-48">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <Filter className="w-4 h-4" />
+          </div>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full pl-10 pr-8 py-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white text-sm appearance-none cursor-pointer"
+          >
+            <option value="">All Items</option>
+            <option value="lowstock">Low Stock</option>
+            <option value="expiring">Expiring Soon</option>
+          </select>
+        </div>
       </div>
 
       {/* Data Table */}
@@ -248,7 +275,7 @@ export const Inventory = () => {
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-emerald-500"></div>
           </div>
-        ) : items.length === 0 ? (
+        ) : filteredItems.length === 0 ? (
           <div className="text-center py-20 text-slate-400 text-sm">
             No items found matching the search criteria.
           </div>
@@ -269,7 +296,7 @@ export const Inventory = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700">
-                  {items.map((item) => {
+                  {filteredItems.map((item) => {
                     const isLow = isLowStock(item);
                     const isExp = isExpiringSoon(item.expiry_date);
                     return (
@@ -337,7 +364,7 @@ export const Inventory = () => {
 
             {/* Mobile/Tablet Card View */}
             <div className="lg:hidden divide-y divide-slate-100 bg-white">
-              {items.map((item) => {
+              {filteredItems.map((item) => {
                 const isLow = isLowStock(item);
                 const isExp = isExpiringSoon(item.expiry_date);
                 return (
