@@ -1334,10 +1334,10 @@ export const Billing = () => {
                         </div>
                       )}
 
-                      {/* TOTAL Bar representing final net payable amount */}
+                      {/* TOTAL Bar representing grand total amount */}
                       <div className="bg-[#00b887] text-white font-bold p-2 rounded-lg flex justify-between items-center text-xs shadow-sm">
-                        <span>TOTAL PAYABLE:</span>
-                        <span>₹{Number(printTargetInvoice.out_of_pocket_due).toFixed(2)}</span>
+                        <span>TOTAL:</span>
+                        <span>₹{Number(printTargetInvoice.total_amount).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
