@@ -291,8 +291,8 @@ export const Appointments = () => {
 
   // Unique list of doctors for filter dropdown
   const doctorsList = [
-    'Dr. Kannappan',
-    'Dr. Suriya'
+    'Dr. Kannappan M.B.B.S, M.S.',
+    'Dr. Suriya M.B.B.S.'
   ];
 
   const handleExportCSV = () => {

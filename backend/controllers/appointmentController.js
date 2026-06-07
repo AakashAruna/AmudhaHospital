@@ -14,7 +14,9 @@ exports.listAppointments = async (req, res) => {
   }
 
   if (doctor) {
-    whereClause.doctor_name = doctor;
+    whereClause.doctor_name = {
+      [Op.iLike]: `%${doctor}%`
+    };
   }
 
   if (status_filter) {
