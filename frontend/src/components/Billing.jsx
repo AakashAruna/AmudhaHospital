@@ -31,6 +31,8 @@ export const Billing = () => {
   // Searchable combobox states
   const [openDropdownIdx, setOpenDropdownIdx] = useState(null);
   const [drugSearchQuery, setDrugSearchQuery] = useState('');
+  const [patientSearchQuery, setPatientSearchQuery] = useState('');
+  const [isPatientDropdownOpen, setIsPatientDropdownOpen] = useState(false);
 
   // Search states
   const [invoiceSearch, setInvoiceSearch] = useState('');
@@ -49,6 +51,8 @@ export const Billing = () => {
   const [newPatientGender, setNewPatientGender] = useState('Male');
   const [newPatientContact, setNewPatientContact] = useState('');
   const [newPatientAdmission, setNewPatientAdmission] = useState('Outpatient');
+
+  const selectedPatient = patients.find(p => p.id === selectedPatientId);
 
   // Checkout Modal State
   const [checkoutInvoice, setCheckoutInvoice] = useState(null);
@@ -206,6 +210,7 @@ export const Billing = () => {
       setDiscount(0.00);
       setInsuranceCovered(0.00);
       setBillItems([]);
+      setPatientSearchQuery('');
       setActiveSubTab('list');
       fetchData(); // Reload invoices
     } catch (err) {
@@ -689,20 +694,73 @@ export const Billing = () => {
               
               {/* Select Patient Section */}
               <div className="flex gap-4 items-end">
-                <div className="flex-1">
+                <div className="flex-1 relative">
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider">Select Patient</label>
-                  <select
-                    value={selectedPatientId}
-                    onChange={(e) => setSelectedPatientId(e.target.value)}
-                    className="mt-1 w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm cursor-pointer"
+                  
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsPatientDropdownOpen(!isPatientDropdownOpen);
+                      setPatientSearchQuery('');
+                    }}
+                    className="mt-1 w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm cursor-pointer bg-white flex justify-between items-center text-left"
                   >
-                    <option value="">Choose Patient...</option>
-                    {patients.map(p => (
-                      <option key={p.id} value={p.id}>
-                        {p.name} ({p.admission_status} - Contact: {p.contact})
-                      </option>
-                    ))}
-                  </select>
+                    {selectedPatient ? (
+                      <span>
+                        {selectedPatient.name} ({selectedPatient.admission_status} - Contact: {selectedPatient.contact})
+                      </span>
+                    ) : (
+                      <span className="text-slate-400">Choose Patient...</span>
+                    )}
+                    <span className="text-slate-400 text-[10px]">▼</span>
+                  </button>
+
+                  {isPatientDropdownOpen && (
+                    <>
+                      <div className="fixed inset-0 z-10" onClick={() => setIsPatientDropdownOpen(false)} />
+                      <div className="absolute left-0 right-0 mt-1 bg-white border border-slate-250 rounded-xl shadow-xl z-20 p-2 space-y-2">
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-2.5 flex items-center pointer-events-none text-slate-400">
+                            <Search className="w-3.5 h-3.5" />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Search patient by name or contact number..."
+                            value={patientSearchQuery}
+                            onChange={(e) => setPatientSearchQuery(e.target.value)}
+                            className="w-full pl-8 pr-2.5 py-1.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            autoFocus
+                          />
+                        </div>
+                        <div className="max-h-60 overflow-y-auto space-y-0.5">
+                          {(() => {
+                            const filtered = patients.filter(p => 
+                              p.name.toLowerCase().includes(patientSearchQuery.toLowerCase()) ||
+                              p.contact.includes(patientSearchQuery)
+                            );
+                            if (filtered.length === 0) {
+                              return <div className="p-2 text-center text-slate-400 text-xs">No patients found</div>;
+                            }
+                            return filtered.map(p => (
+                              <button
+                                key={p.id}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedPatientId(p.id);
+                                  setIsPatientDropdownOpen(false);
+                                  setPatientSearchQuery('');
+                                }}
+                                className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-slate-50 flex flex-col font-medium cursor-pointer"
+                              >
+                                <span className="text-slate-900">{p.name}</span>
+                                <span className="text-[10px] text-slate-500">{p.admission_status} • Contact: {p.contact}</span>
+                              </button>
+                            ));
+                          })()}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <button
                   type="button"
@@ -979,6 +1037,7 @@ export const Billing = () => {
                     setDiscount(0);
                     setInsuranceCovered(0);
                     setBillItems([]);
+                    setPatientSearchQuery('');
                     setActiveSubTab('list');
                   }}
                   className="w-full py-2 text-slate-500 hover:text-slate-800 text-xs text-center border border-slate-200 hover:bg-slate-50 rounded-xl font-semibold transition"
