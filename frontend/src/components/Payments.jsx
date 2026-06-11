@@ -8,7 +8,8 @@ import {
   CheckCircle2,
   Calendar,
   UserRound,
-  Download
+  Download,
+  Filter
 } from 'lucide-react';
 import { exportToCSV } from '../utils/csvExport';
 
@@ -18,6 +19,7 @@ export const Payments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
+  const [paymentModeFilter, setPaymentModeFilter] = useState('');
 
   const fetchTransactions = async () => {
     setLoading(true);
@@ -56,12 +58,16 @@ export const Payments = () => {
     return acc;
   }, {});
 
-  const filteredTransactions = transactions.filter(tx => 
-    tx.invoice_id.toLowerCase().includes(search.toLowerCase()) || 
-    (tx.reference_number && tx.reference_number.toLowerCase().includes(search.toLowerCase())) ||
-    tx.processed_by.toLowerCase().includes(search.toLowerCase()) ||
-    (tx.invoice?.patient?.name && tx.invoice.patient.name.toLowerCase().includes(search.toLowerCase()))
-  );
+  const filteredTransactions = transactions.filter(tx => {
+    const matchesSearch = tx.invoice_id.toLowerCase().includes(search.toLowerCase()) || 
+      (tx.reference_number && tx.reference_number.toLowerCase().includes(search.toLowerCase())) ||
+      tx.processed_by.toLowerCase().includes(search.toLowerCase()) ||
+      (tx.invoice?.patient?.name && tx.invoice.patient.name.toLowerCase().includes(search.toLowerCase()));
+
+    const matchesMode = paymentModeFilter === '' || tx.payment_mode === paymentModeFilter;
+
+    return matchesSearch && matchesMode;
+  });
 
   const handleExportCSV = () => {
     const headers = [
@@ -146,6 +152,24 @@ export const Payments = () => {
               className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white text-sm transition"
             />
           </div>
+
+          {/* Payment Mode Filter Dropdown */}
+          <div className="relative w-full sm:w-48">
+            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+              <Filter className="w-4 h-4" />
+            </div>
+            <select
+              value={paymentModeFilter}
+              onChange={(e) => setPaymentModeFilter(e.target.value)}
+              className="w-full pl-10 pr-8 py-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white text-sm appearance-none cursor-pointer"
+            >
+              <option value="">All Payment Modes</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="UPI">UPI</option>
+            </select>
+          </div>
+
           <button
             onClick={handleExportCSV}
             className="flex items-center justify-center gap-2 text-sm font-semibold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 transition active:scale-95 duration-100"
